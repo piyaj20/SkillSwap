@@ -17,11 +17,14 @@ namespace SkillSwap.Pages
         IWebElement SentRequests => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[1]/div/div[1]/div/a[2]"));
         IWebElement ReceivedRequestsTitle => driver.FindElement(By.XPath("//*[@id='received-request-section']/div[2]/h2"));
         IWebElement SentRequestsTitle => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/h2"));
-        IWebElement ActionsButton => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/div[1]/table/tbody/tr/td[8]/button"));
         IWebElement Accept => driver.FindElement(By.XPath("//*[@id='received-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[8]/button[1]"));
         IWebElement Decline => driver.FindElement(By.XPath("//*[@id='received-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[8]/button[2]"));
-        IWebElement ReceivedRequestStatus => driver.FindElement(By.XPath("//*[@id='received-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[5]"));
-        IWebElement SentRequestStatus => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/div[1]/table/tbody/tr/td[5]"));
+        IWebElement Withdraw => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[8]/button"));
+        IWebElement Completed => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[8]/button"));
+        IWebElement AcceptedRequestStatus => driver.FindElement(By.XPath("//*[@id='received-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[5]"));
+        IWebElement DeclinedRequestStatus => driver.FindElement(By.XPath("//*[@id='received-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[5]"));
+        IWebElement WithdrawnRequestStatus => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[5]"));
+        IWebElement CompletedRequestStatus => driver.FindElement(By.XPath("//*[@id='sent-request-section']/div[2]/div[1]/table/tbody/tr[1]/td[5]"));
 
 
 
@@ -47,8 +50,8 @@ namespace SkillSwap.Pages
             ClickReceivedRequests();
             ValidateAtReceivedRequestsPage();
             ClickAccept();
-            bool isStatusAccepted = ValidateReceivedRequestStatus(acceptreceived);
-            Assert.IsTrue(isStatusAccepted);
+            ValidateAcceptedRequestStatus();
+           
         }
 
 
@@ -60,8 +63,8 @@ namespace SkillSwap.Pages
             ClickReceivedRequests();
             ValidateAtReceivedRequestsPage();
             ClickDecline();
-            bool isStatusDeclined = ValidateReceivedRequestStatus(declinereceived);
-            Assert.IsTrue(isStatusDeclined);
+            ValidateDeclinedRequestStatus();
+           
 
         }
         public void ClickManageRequests()
@@ -85,8 +88,9 @@ namespace SkillSwap.Pages
             Accept.Click();
         }
 
-        public bool ValidateReceivedRequestStatus(string status)
+        public void ValidateAcceptedRequestStatus()
         {
+            /*
             if (ReceivedRequestStatus.Text == status)
             {
                 return true;
@@ -94,13 +98,20 @@ namespace SkillSwap.Pages
             else
             {
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(acceptreceived, AcceptedRequestStatus.Text);
 
         }        
 
         public void ClickDecline()
         {
             Decline.Click();
+        }
+
+        public void ValidateDeclinedRequestStatus()
+        {           
+            Assert.AreEqual(declinereceived, DeclinedRequestStatus.Text);
         }
 
 
@@ -112,9 +123,11 @@ namespace SkillSwap.Pages
             ClickManageRequests();
             ClickSentRequests();
             ValidateAtSentRequestsPage();
-            ClickActionsButton();
-            bool isStatusWithdrawn = ValidateSentRequestStatus(withdrawsent);
-            Assert.IsTrue(isStatusWithdrawn);
+            ClickWithdraw();
+
+            //bool isStatusWithdrawn = ValidateSentRequestStatus(withdrawsent);
+            //Assert.IsTrue(isStatusWithdrawn);
+            ValidateWithdrawnRequestStatus();
         }
 
 
@@ -125,9 +138,9 @@ namespace SkillSwap.Pages
             ClickManageRequests();
             ClickSentRequests();
             ValidateAtSentRequestsPage();
-            ClickActionsButton();
-            bool isStatusCompleted = ValidateSentRequestStatus(completesent);
-            Assert.IsTrue(isStatusCompleted);
+            ClickCompleted();
+            ValidateCompletedRequestStatus();
+           
         }
 
 
@@ -142,24 +155,25 @@ namespace SkillSwap.Pages
             Assert.IsTrue(isSentRequestsPage);
         }
 
-        public void ClickActionsButton()
+        public void ClickWithdraw()
         {
-            ActionsButton.Click();
+            Withdraw.Click();
         }
 
-        public bool ValidateSentRequestStatus(string status)
+        public void ValidateWithdrawnRequestStatus()
         {
-            
-            if (SentRequestStatus.Text == status)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            Assert.AreEqual(withdrawsent, WithdrawnRequestStatus.Text);
         }
 
+        public void ClickCompleted()
+        {
+            Completed.Click();
+        }
+
+        public void ValidateCompletedRequestStatus()
+        {
+            Assert.AreEqual(completesent, CompletedRequestStatus.Text);
+        }
 
     }
 

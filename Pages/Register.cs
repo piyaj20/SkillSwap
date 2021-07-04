@@ -1,6 +1,8 @@
 ﻿
+using NUnit.Framework;
 using OpenQA.Selenium;
 using SeleniumExtras.PageObjects;
+using System;
 using static SkillSwap.Utilities.CommonMethods;
 
 namespace SkillSwap.Pages
@@ -18,7 +20,8 @@ namespace SkillSwap.Pages
         IWebElement ConfirmRegisterPassword => driver.FindElement(By.XPath("//body/div[2]/div[1]/div[1]/form[1]/div[5]/input[1]"));
         IWebElement AgreeTerms => driver.FindElement(By.XPath("//body/div[2]/div[1]/div[1]/form[1]/div[6]/div[1]/div[1]/input[1]"));
         IWebElement JoinButton => driver.FindElement(By.XPath("//*[@id='submit-btn']"));
-        
+        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+
 
         //Read Data from Excel
         private string firstName = ExcelLib.ReadData(1, "FirstName");
@@ -26,7 +29,7 @@ namespace SkillSwap.Pages
         private string email = ExcelLib.ReadData(1, "Email");
         private string userpassword = ExcelLib.ReadData(1, "UserPassword");
         private string confirmregPassword = ExcelLib.ReadData(1, "ConfirmRegPassword");
-
+        private string successmessage = ExcelLib.ReadData(1, "RegistrationMessage");
 
         public Register(IWebDriver driver)
         {
@@ -36,19 +39,28 @@ namespace SkillSwap.Pages
 
         public void RegisterUser()
         {
-            JoinUser(firstName, lastName, email, userpassword, confirmregPassword);
+            ClickJoin();
+            ValidateYouAreAtRegistrationPage();
+            JoinUser();
+            ClickAgreeTermsAndConditions();
+            ClickJoinButton();
+            ValidateSuccessMessage();
 
         }
 
-        public void JoinUser(string firstName, string lastName, string email, string userpassword, string confirmregPassword)
+        public void ClickJoin()
         {
-
-            
-            driver.Navigate().GoToUrl("http://localhost:5000");
-
             //click Join/Register
-
             Join.Click();
+        }
+
+        public bool ValidateYouAreAtRegistrationPage()
+        {
+            return JoinButton.Displayed;
+
+        }
+        public void JoinUser()
+        {
 
             //Enter details
             FirstName.SendKeys(firstName);
@@ -65,14 +77,40 @@ namespace SkillSwap.Pages
 
             ConfirmRegisterPassword.SendKeys(confirmregPassword);
 
+        }
 
+        public void ClickAgreeTermsAndConditions()
+        {
+            //Click on AgreeTermsAndConditions
             AgreeTerms.Click();
 
+        }
 
+        public void ClickJoinButton()
+        {
+            //Click Join button
             JoinButton.Click();
 
+        }
 
+        public void ValidateSuccessMessage()
+        {
+            // validate registration message
+            /*
+            if (Message.Text == successmessage)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }*/
+
+            Assert.AreEqual(successmessage, Message.Text);
         }
 
     }
 }
+
+    
+

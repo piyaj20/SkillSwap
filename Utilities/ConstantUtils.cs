@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,14 +12,13 @@ namespace SkillSwap.Utilities
         //Site Url
         public static string Url = "http://localhost:5000";
 
-        //ExtentReport Path
-        public static string ReportsPath = @"/Users/priyanka/ExtentReports/";
+        // Excel path
+        public static String DataFilePath = Directory.GetCurrentDirectory() + @"\SkillSwap\ExcelData\TestDataManageListings.xlsx";
 
-        //Test DataFilePath
-        public static string DataFilePath = @"/Users/priyanka/ExcelSheet/TestDataManageListings.xlsx";
+        // Path to Save Screenshots
+        public static String ScreenshotPath = Directory.GetCurrentDirectory() + @"\SkillSwap\TestReports\Screenshots";
 
-        //Screenshot Path
-        public static string WorkSamplePath = @"/Users/priyanka/Screenshot/Work-Samples.jpg";
-
+        // ExtentReport path
+        public static String ReportsPath = Directory.GetCurrentDirectory() + @"\SkillSwap\TestReports\index.html";
     }
 }

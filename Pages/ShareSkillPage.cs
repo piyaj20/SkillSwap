@@ -4,7 +4,7 @@ using System;
 using SkillSwap.Utilities;
 using static SkillSwap.Utilities.CommonMethods;
 using AutoItX3Lib;
-
+using NUnit.Framework;
 
 namespace SkillSwap.Pages
 {
@@ -12,6 +12,7 @@ namespace SkillSwap.Pages
     {
         private readonly IWebDriver driver;
         private LoginPage logIn;
+        private NavigateToManageListingPage manageListings;
 
         //Page Factory
 
@@ -67,6 +68,7 @@ namespace SkillSwap.Pages
         IWebElement Hidden => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[10]/div[2]/div/div[2]/div/input"));
 
         IWebElement SaveButton => driver.FindElement(By.XPath("//*[@id='service-listing-section']/div[2]/div/form/div[11]/div/input[1]"));
+        IWebElement SavedTitle => driver.FindElement(By.XPath("//*[@id='listing-management-section']/div[2]/div[1]/div[1]/table/tbody/tr[1]/td[3]"));
 
 
         //Finding the Edit Button
@@ -88,7 +90,8 @@ namespace SkillSwap.Pages
 
         IWebElement Message => driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]"));
         
-             
+
+
         //Read Data from Excel
         private string title = ExcelLib.ReadData(1, "Title");
         private string description = ExcelLib.ReadData(1, "Description");
@@ -116,6 +119,7 @@ namespace SkillSwap.Pages
 
             this.driver = driver;
             logIn = new LoginPage(driver);
+            manageListings = new NavigateToManageListingPage(driver);
         }
 
 
@@ -125,6 +129,12 @@ namespace SkillSwap.Pages
         {
             logIn.LoginSteps();
             ClickShareSkill();
+            EnterData();
+            ClickSaveButton();
+        }
+
+        public void EnterData()
+        {
             EnterTitle(title);
             EnterDescription(description);
             SelectCategory(category);
@@ -137,7 +147,6 @@ namespace SkillSwap.Pages
             SelectSkillTrade(skillTrade, skillExchangeTag, creditServiceCharge);
             //WorkSamples();
             SelectActive(active);
-            ClickSaveButton();
         }
 
         public void ClickShareSkill()
@@ -146,6 +155,11 @@ namespace SkillSwap.Pages
             //Click Share Skill Button from Profile Page
 
             ShareSkillButton.Click();
+        }
+
+        public bool ValidateYouAreAtShareSkillPage()
+        {
+            return SaveButton.Displayed;
         }
 
         public void EnterTitle(string title)
@@ -328,23 +342,28 @@ namespace SkillSwap.Pages
 
         }
 
-
-
-
-
-        public void EditShareSkill(IWebDriver driver)
+        public void ValidateServiceSavedSuccessfully()
         {
-            EditRecord(driver);
-            ValidateServiceUpdatedSuccessfully(editTitle);           
-
+            Assert.AreEqual(title, SavedTitle.Text);
         }
 
-        public void EditRecord(IWebDriver driver)
-        {
-            
-            //Edit Manage Listings            
 
+
+        public void EditShareSkill()
+        {
+            manageListings.ClickManageListings();
+            manageListings.ValidateYouAreAtManageListingsPage();
+           
+        }
+
+        public void EditIcon()
+        {
+            //Edit Manage Listings
             Edit.Click();
+        }
+
+        public void UpdateData()
+        {
 
             EditTitle.Clear();
 
@@ -355,26 +374,13 @@ namespace SkillSwap.Pages
             EditDescription.Clear();
 
             EditDescription.SendKeys(editDescription);
-
-            SaveB.Click();
-
-        }
+        }      
 
 
-        public bool ValidateServiceUpdatedSuccessfully(string editTitle)
+        public void ValidateServiceUpdatedSuccessfully()
         {
             
-            //Wait.ElementExists(driver, "XPath", "//tbody/tr[1]/td[3]", 5);
-
-            if (UpdateTitle.Text == editTitle)
-            {
-                return true;
-
-            }
-            else
-            {
-                return false;
-            }
+            Assert.AreEqual(editTitle, UpdateTitle.Text);
 
         }
 
@@ -385,43 +391,30 @@ namespace SkillSwap.Pages
         public void DeleteShareSkill(IWebDriver driver)
         {
 
-            DeleteRecord(driver);
+            DeleteRecord();
             ValidateServiceDeletedSuccessfully();
            
         }
 
-        public void DeleteRecord(IWebDriver driver)
+        public void DeleteRecord()
         {
-            var deleteskillPage = new ShareSkillPage(driver);
-            PageFactory.InitElements(driver, deleteskillPage);
+            //Delete Manage Listings    
+             Delete.Click();
+        }
 
+        public void ClickYesonPopup()
+        { 
 
-            //Delete Manage Listings            
-
-            deleteskillPage.Delete.Click();
-
-            deleteskillPage.DeleteYes.Click();
+            DeleteYes.Click();
 
         }
 
 
         public bool ValidateServiceDeletedSuccessfully()
         {
-            var deleteskillPage = new ShareSkillPage(driver);
-            PageFactory.InitElements(driver, deleteskillPage);
-
-            if (deleteskillPage.Message.Displayed)
-            {
-                return true;
-              
-            }
-            else 
-            {
-                return false;
-            }
-
+            return Message.Displayed;
+            
         }
-
 
     }
 }

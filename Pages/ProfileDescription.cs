@@ -38,12 +38,14 @@ namespace SkillSwap.Pages
             logIn.LoginSteps();
             ValidateProfilePage();
             ClickDescriptionIcon();
-            EnterDescription(profiledescription);
+            EnterDescription();
             ClickSave();
-            bool isMessage = ValidateDescriptionSavedMessage(descriptionmessage);
-            Assert.IsTrue(isMessage);
-            bool isDescription = ValidateSavedDescription(profiledescription);
-            Assert.IsTrue(isDescription);
+            //bool isMessage = ValidateDescriptionSavedMessage(descriptionmessage);
+            //Assert.IsTrue(isMessage);
+            ValidateDescriptionSavedMessage();
+            //bool isDescription = ValidateSavedDescription(profiledescription);
+            //Assert.IsTrue(isDescription);
+            ValidateSavedDescription();
         }
 
         public void ValidateProfilePage()
@@ -58,7 +60,7 @@ namespace SkillSwap.Pages
             DescriptionIcon.Click();
         }
 
-        public void EnterDescription(string profiledescription)
+        public void EnterDescription()
         {
             //enter description
             DescriptionTextBox.Clear();
@@ -72,9 +74,9 @@ namespace SkillSwap.Pages
 
         }
 
-        public bool ValidateDescriptionSavedMessage(string descriptionmessage)
+        public void ValidateDescriptionSavedMessage()
         {
-            
+            /*
             if (Message.Text == descriptionmessage)
             {
                 return true;
@@ -82,14 +84,17 @@ namespace SkillSwap.Pages
             else
             {
                return false;
-            }
+            }*/
+
+            Assert.AreEqual(descriptionmessage, Message.Text);
         }
 
-        public bool ValidateSavedDescription(string profiledescription)
+        public void ValidateSavedDescription()
         {
             Wait.ElementExists(driver, "XPath", "//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/div/div/div/span", 500);
 
             //validate description is saved
+            /*
             if (SavedDescription.Text == profiledescription)
             {
                 //Console.WriteLine("Description is saved, test passed");
@@ -99,7 +104,9 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Description is not saved, test failed");
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(profiledescription, SavedDescription.Text);
         }
     }
 }

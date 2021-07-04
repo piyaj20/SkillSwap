@@ -4,6 +4,7 @@ using System;
 using static SkillSwap.Utilities.CommonMethods;
 using SkillSwap.Utilities;
 using NUnit.Framework;
+using Microsoft.Office.Interop.Excel;
 
 namespace SkillSwap.Pages
 {
@@ -20,7 +21,8 @@ namespace SkillSwap.Pages
         IWebElement LangLevel => driver.FindElement(By.XPath("//option[contains(text(),'Fluent')]"));
         IWebElement AddLang => driver.FindElement(By.XPath("//body/div[@id='account-profile-section']/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/div[1]/div[3]/input[1]"));
         IWebElement AddedLanguage => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[2]/div/div[2]/div/table/tbody/tr/td[1]"));
-        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+        IWebElement Message => driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]"));
+        
         IWebElement EditLangBtn => driver.FindElement(By.XPath("//body[1]/div[1]/div[1]/section[2]/div[1]/div[1]/div[1]/div[3]/form[1]/div[2]/div[1]/div[2]/div[1]/table[1]/tbody[1]/tr[1]/td[3]/span[1]/i[1]"));
         IWebElement ClearLangText => driver.FindElement(By.XPath("//tbody/tr[1]/td[1]/div[1]/div[1]/input[1]"));
         IWebElement EditLangText => driver.FindElement(By.XPath("//tbody/tr[1]/td[1]/div[1]/div[1]/input[1]"));
@@ -49,13 +51,15 @@ namespace SkillSwap.Pages
             logIn.LoginSteps();
             profileDescription.ValidateProfilePage();
             ClickAddNewLanguage();
-            EnterLanguage(language);
+            EnterLanguage();
             ChooseLanguageLevel();
             ClickAdd();
-            bool isMessage = ValidateLanguageSavedMessage();
-            Assert.IsTrue(isMessage);
-            bool isLanguage = ValidateAddedLanguage();
-            Assert.IsTrue(isLanguage);
+            //bool isMessage = ValidateLanguageSavedMessage();
+            //Assert.IsTrue(isMessage);
+            ValidateLanguageSavedMessage();
+            //bool isLanguage = ValidateAddedLanguage();
+            //Assert.IsTrue(isLanguage);
+            ValidateAddedLanguage();
             EditLanguage(editlanguage);
             //DeleteLanguage();
         }
@@ -67,7 +71,7 @@ namespace SkillSwap.Pages
             AddNewLangBtn.Click();
         }
 
-        public void EnterLanguage(string language)
+        public void EnterLanguage()
         {
             // enter language
             AddLangText.SendKeys(language);
@@ -84,12 +88,13 @@ namespace SkillSwap.Pages
         {
             //click add for language
             AddLang.Click();
+            Wait.ElementExists(driver, "XPath", "/html[1]/body[1]/div[1]/div[1]", 10);
             
         }
 
-        public bool ValidateLanguageSavedMessage()
+        public void ValidateLanguageSavedMessage()
         {
-            
+            /*
             if (Message.Text == validatelanguagemessage)
             {
                 return true;
@@ -97,13 +102,16 @@ namespace SkillSwap.Pages
             else
             {
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(validatelanguagemessage, Message.Text);
         }
 
-        public bool ValidateAddedLanguage()
+        public void ValidateAddedLanguage()
         {
-            
+
             //validate language is added
+            /*
             if (AddedLanguage.Text == language)
             {
                 //Console.WriteLine("Language is added, test passed");
@@ -113,7 +121,9 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Language is not added, test failed");
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(language, AddedLanguage.Text);
         }
 
 

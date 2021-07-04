@@ -27,7 +27,7 @@ namespace SkillSwap.Pages
         IWebElement LessThan500 => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[2]/div/div/div/div/div/div[3]/div/div[4]/div/span/select/option[2]"));
         IWebElement Between500And1000 => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[2]/div/div/div/div/div/div[3]/div/div[4]/div/span/select/option[3]"));
         IWebElement MoreThan1000 => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[2]/div/div/div/div/div/div[3]/div/div[4]/div/span/select/option[4]"));
-        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+        IWebElement Message => driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]"));
 
         //Read from Excel
         private string availability = ExcelLib.ReadData(1, "Availability");
@@ -54,8 +54,9 @@ namespace SkillSwap.Pages
             profileDescription.ValidateProfilePage();
             ClickAvailability();
             SelectAvailability();
-            bool isAvailability = ValidateSuccessMessage(availabilitymessage);
-            Assert.IsTrue(isAvailability);
+            //bool isAvailability = ValidateSuccessMessage(availabilitymessage);
+            //Assert.IsTrue(isAvailability);
+            ValidateSuccessMessage();
         }
 
         //selecting hours
@@ -64,7 +65,7 @@ namespace SkillSwap.Pages
             logIn.LoginSteps();
             profileDescription.ValidateProfilePage();
             ClickHours();
-            SelectHours(hours);
+            SelectHours();
             //bool isHours = ValidateSuccessMessage(hoursmessage);
             //Assert.IsTrue(isHours);
         }
@@ -75,7 +76,7 @@ namespace SkillSwap.Pages
             logIn.LoginSteps();
             profileDescription.ValidateProfilePage();
             ClickEarnTarget();
-            SelectEarnTarget(earntarget);
+            SelectEarnTarget();
             //bool isEarnTarget = ValidateSuccessMessage(earntargetmessage);
             //Assert.IsTrue(isEarnTarget);
         }
@@ -104,7 +105,7 @@ namespace SkillSwap.Pages
             HoursIcon.Click();
         }
 
-        public void SelectHours(string hours)
+        public void SelectHours()
         {
             switch (hours)
             {
@@ -132,9 +133,9 @@ namespace SkillSwap.Pages
             EarnTargetIcon.Click();
         }
 
-        public void SelectEarnTarget(string earnTarget)
+        public void SelectEarnTarget()
         {
-            switch (earnTarget)
+            switch (earntarget)
             {
                 case "Less than $500 per month":
 
@@ -153,10 +154,11 @@ namespace SkillSwap.Pages
             }
         }
 
-        public bool ValidateSuccessMessage(string message)
+        public void ValidateSuccessMessage()
 
         {
             //validate updation message
+            /*
             if (Message.Text == message)
             {
 
@@ -166,7 +168,9 @@ namespace SkillSwap.Pages
             {
 
                 return false;
-            }
+            }*/
+
+             Assert.AreEqual(availabilitymessage, Message.Text);
 
         }
 

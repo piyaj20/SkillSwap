@@ -17,6 +17,7 @@ namespace SkillSwap.Pages
         IWebElement SearchSkillsTextBox => driver.FindElement(By.XPath("//*[@id='service-search-section']/div[2]/div/section/div/div[1]/div[2]/input"));
         IWebElement SearchedSkillResult => driver.FindElement(By.XPath("//*[@id='service-search-section']/div[2]/div/section/div/div[2]/div/div[2]/div/div/div/div[1]/a[2]/p"));
         IWebElement FilterOnline => driver.FindElement(By.XPath("//*[@id='service-search-section']/div[2]/div/section/div/div[1]/div[5]/button[1]"));
+        IWebElement RefineResults => driver.FindElement(By.XPath("//h3[contains(text(),'Refine Results')]"));
 
         //Read data from Excel
         private string searchskill = ExcelLib.ReadData(1, "SearchSkill");
@@ -34,9 +35,13 @@ namespace SkillSwap.Pages
         {
             logIn.LoginSteps();
             ClickSearchIcon();
-            EnterSearchSkill(searchskill);
-            bool isSearchResult = ValidateSearchResult(searchskill);
-            Assert.IsTrue(isSearchResult);
+            ValidateSearchPage();
+            EnterSearchSkill();
+            ClickEnter();
+            
+            //bool isSearchResult = ValidateSearchResult(searchskill);
+            //Assert.IsTrue(isSearchResult);
+            
         }
 
         //searching a skill using filter
@@ -45,9 +50,12 @@ namespace SkillSwap.Pages
             logIn.LoginSteps();
             ClickSearchIcon();
             ClickOnline();
-            EnterSearchSkill(searchskill);
-            bool isSearchResult = ValidateSearchResult(searchskill);
-            Assert.IsTrue(isSearchResult);
+            EnterSearchSkill();
+            ClickEnter();
+            
+            //bool isSearchResult = ValidateSearchResult(searchskill);
+            //Assert.IsTrue(isSearchResult);
+            
         }
         public void ClickSearchIcon()
         {
@@ -55,10 +63,22 @@ namespace SkillSwap.Pages
             SearchIcon.Click();
         }
 
-        public void EnterSearchSkill(string searchskill)
+        public bool ValidateSearchPage()
+        {
+            
+            return RefineResults.Displayed;
+
+        }
+
+        public void EnterSearchSkill()
         {
             //enter skill to search
             SearchSkillsTextBox.SendKeys(searchskill);
+
+        }
+
+        public void ClickEnter()
+        { 
 
             //Click enter
             SearchSkillsTextBox.SendKeys(Keys.Enter);
@@ -78,10 +98,11 @@ namespace SkillSwap.Pages
         }
 
 
-        public bool ValidateSearchResult(string searchskill)
+        public void ValidateSearchResult()
         {
             
             //validate search skill result
+            /*
             if (SearchedSkillResult.Text == searchskill)
             {
                 return true;
@@ -89,7 +110,9 @@ namespace SkillSwap.Pages
             else
             {
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(searchskill, SearchedSkillResult.Text);
         }
     }
 }

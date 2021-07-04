@@ -20,7 +20,7 @@ namespace SkillSwap.Pages
         IWebElement Year => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[5]/div[1]/div[2]/div/div/div[2]/div[2]/select/option[13]"));
         IWebElement Add => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[5]/div[1]/div[2]/div/div/div[3]/input[1]"));
         IWebElement AddedCertificate => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[5]/div[1]/div[2]/div/table/tbody/tr/td[1]"));
-        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+        IWebElement Message => driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]"));
         IWebElement CertificationsTab => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[1]/a[4]"));
         IWebElement EditCertificationBtn => driver.FindElement(By.XPath("//tbody/tr[1]/td[4]/span[1]/i[1]"));
         IWebElement ClearCertificationText => driver.FindElement(By.XPath("//tbody/tr[1]/td[1]/div[1]/div[1]/div[1]/input[1]"));
@@ -52,14 +52,16 @@ namespace SkillSwap.Pages
             profileDescription.ValidateProfilePage();
             ClickCertificationsTab();
             ClickAddNew();
-            EnterCertificate(certificate);
-            EnterCertifiedFrom(certifiedfrom);
+            EnterCertificate();
+            EnterCertifiedFrom();
             SelectYear();
             ClickAdd();
-            bool isMessage = ValidateCertificateSavedMessage(certificatemessage);
-            Assert.IsTrue(isMessage);
-            bool isCertificate = ValidateAddedCertificate(certificate);
-            Assert.IsTrue(isCertificate);
+            //bool isMessage = ValidateCertificateSavedMessage(certificatemessage);
+            //Assert.IsTrue(isMessage);
+            ValidateCertificateSavedMessage();
+            //bool isCertificate = ValidateAddedCertificate(certificate);
+            //Assert.IsTrue(isCertificate);
+            ValidateAddedCertificate();
             EditCertification(editcertificate);
             DeleteNewCertification();
         }
@@ -76,13 +78,13 @@ namespace SkillSwap.Pages
             AddNew.Click();
         }
 
-        public void EnterCertificate(string certificate)
+        public void EnterCertificate()
         {
             // enter Certificate
             Certificate.SendKeys(certificate);
         }
 
-        public void EnterCertifiedFrom(string certifiedfrom)
+        public void EnterCertifiedFrom()
         {
             // enter Certified From
             CertifiedFrom.SendKeys(certifiedfrom);
@@ -99,11 +101,13 @@ namespace SkillSwap.Pages
         {
             //click add for Certifications
             Add.Click();
+            
         }
 
-        public bool ValidateCertificateSavedMessage(string certificatemessage)
+        public void ValidateCertificateSavedMessage()
         {
-            
+           
+            /*
             if (Message.Text == certificatemessage)
             {
                 //Console.WriteLine("Success message is displayed, test passed");
@@ -114,12 +118,17 @@ namespace SkillSwap.Pages
                 //Console.WriteLine("Success message is not displayed, test failed");
                 return false;
             }
+            */
+            Wait.ElementExists(driver, "XPath", "/html/body/div[1]/div", 1000);
+            Assert.AreEqual(certificatemessage, Message.Text);
+            Wait.ElementExists(driver, "XPath", "/html/body/div[1]/div", 1000);
         }
 
-        public bool ValidateAddedCertificate(string certificate)
+        public void ValidateAddedCertificate()
         {
-            
+
             //validate Certificate is added
+            /*
             if (AddedCertificate.Text == certificate)
             {
                 //Console.WriteLine("Certificate is added, test passed");
@@ -129,7 +138,9 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Certificate is not added, test failed");
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(certificate, AddedCertificate.Text);
         }
 
 

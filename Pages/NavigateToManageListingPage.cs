@@ -15,8 +15,8 @@ namespace SkillSwap.Pages
         //Finding the Manage Listings tab
         IWebElement ManageListingstab => driver.FindElement(By.XPath("//a[contains(text(),'Manage Listings')]"));
 
-        // Finding the Manage Listings Page Title
-        IWebElement ManageListings => driver.FindElement(By.XPath("//h2[contains(text(),'Manage Listings')]"));
+        // Finding the Edit Icon
+        IWebElement Edit => driver.FindElement(By.XPath("//tbody/tr[1]/td[8]/div[1]/button[2]/i[1]"));
 
 
         //Create a Constructor
@@ -28,8 +28,7 @@ namespace SkillSwap.Pages
         }
 
 
-
-        public bool ClickManageListings(IWebDriver driver)
+        public void ClickManageListings()
 
         {
             logIn.LoginSteps();
@@ -37,26 +36,14 @@ namespace SkillSwap.Pages
             //Click Manage Listings tab
 
             ManageListingstab.Click();
-
-
-            //Validate at Manage Listings Page
-
-            if (ManageListings.Text == "Manage Listings")
-            {
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-
-            //Assert.That(managelistPage.ManageListings.Text == "Manage Listings");
-
-            //Assert.Pass("Test Passed");
-
         }
-    }
+
+        public bool ValidateYouAreAtManageListingsPage()
+        {
+            return Edit.Displayed;
+        }
+
+    }   
 
 }
 

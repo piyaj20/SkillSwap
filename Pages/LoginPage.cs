@@ -34,10 +34,10 @@ namespace SkillSwap.Pages
         public void LoginSteps()
         {
             ClickSignIn();
-            EnterEmailandPassword(emailAddress, password);
+            EnterEmailandPassword();
             ClickLogin();
-            bool isLoggedIn = ValidateLoggedInSuccessfully();
-            Assert.IsTrue(isLoggedIn);
+            //bool isLoggedIn = ValidateLoggedInSuccessfully();
+            //Assert.IsTrue(isLoggedIn);
         }
 
         public void ClickSignIn()
@@ -45,8 +45,14 @@ namespace SkillSwap.Pages
             //click sign in 
             SignIn.Click();
         }
-        
-        public void EnterEmailandPassword(string emailAddress, string password)
+
+        public bool ValidateYouAreAtLoginPage()
+        {
+            return LoginButton.Displayed;
+
+        }
+
+        public void EnterEmailandPassword()
         {
             
             try
@@ -70,7 +76,7 @@ namespace SkillSwap.Pages
         {
             //Click Login
             LoginButton.Click();
-            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
         }
 
         public bool ValidateLoggedInSuccessfully()

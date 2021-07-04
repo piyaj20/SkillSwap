@@ -12,22 +12,12 @@ namespace SkillSwap.Utilities
 {
     public class CommonDriver
     {
-        //intitialise driver
-        public static IWebDriver driver;
-        public static LoginPage LogIn;
-        public static ExtentReports extent;
-        public static ExtentHtmlReporter hTMLReporter;
-        public static ExtentTest test;
+        //initialise driver
+        public static IWebDriver driver;        
 
-
-        [OneTimeSetUp]
         public void Initialize()
         {
-            hTMLReporter = new ExtentHtmlReporter(ConstantUtils.ReportsPath);
-            hTMLReporter.Config.Theme = AventStack.ExtentReports.Reporter.Configuration.Theme.Dark;
-            extent = new ExtentReports();
-            extent.AttachReporter(hTMLReporter);
-
+           
             //Defining the browser
             driver = new FirefoxDriver();
 
@@ -35,25 +25,7 @@ namespace SkillSwap.Utilities
             driver.Manage().Window.Maximize();
 
             NavigateUrl();
-
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "Register");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "SignIn");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "ProfilePage");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "AddSkill");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "ManageListings");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "Notification");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "SearchSkill");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "ServiceDetail");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "Chat");
-            ExcelLib.PopulateInCollection(ConstantUtils.DataFilePath, "ManageRequests");
-
-
-
-            //call the Login class
-            //LogIn = new LoginPage(driver);
-            //LogIn.LoginSteps();
-
+           
         }
 
         public static string BaseUrl
@@ -68,15 +40,12 @@ namespace SkillSwap.Utilities
         }
 
 
-        [OneTimeTearDown]
         public void FinalSteps()
         {
             // close the driver
             driver.Close();
             driver.Quit();
-            extent.Flush();
         }
-
 
     }
 }

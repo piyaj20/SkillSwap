@@ -38,21 +38,23 @@ namespace SkillSwap.Pages
         {
             searchPage.SearchSkillsByAllCategories();
             searchPage.ClickSearchedSkill();
-            ValidateYouAreAtServiceDetailPage();
-            EnterMessageToSeller(messagetoseller);
+            bool isServicePage = ValidateYouAreAtServiceDetailPage();
+            Assert.IsTrue(isServicePage);
+            EnterMessageToSeller();
             ClickRequest();
             ClickYes();
-            bool isRequestSent = ValidateRequestSent(sentrequestmessage);
-            Assert.IsTrue(isRequestSent);
+            //bool isRequestSent = ValidateRequestSent(sentrequestmessage);
+            //Assert.IsTrue(isRequestSent);
+            ValidateRequestSent();
 
         }
 
 
 
-        public void ValidateYouAreAtServiceDetailPage()
+        public bool ValidateYouAreAtServiceDetailPage()
         {
-            bool isServicePage = ChatButton.Displayed;
-            Assert.IsTrue(isServicePage);
+            return ChatButton.Displayed;
+
         }
 
         public void ClickChat()
@@ -62,7 +64,7 @@ namespace SkillSwap.Pages
         }
 
 
-        public void EnterMessageToSeller(string messagetoseller)
+        public void EnterMessageToSeller()
         {
             //enter message in message text box
             MessageTextBox.SendKeys(messagetoseller);
@@ -82,10 +84,11 @@ namespace SkillSwap.Pages
             Yes.Click();
         }
 
-        public bool ValidateRequestSent(string sentrequestmessage)
+        public void ValidateRequestSent()
         {
             Wait.ElementExists(driver, "XPath", "/html/body/div[1]/div", 1000);
             //validate request is sent
+            /*
             if (Message.Text == sentrequestmessage)
             {
                 return true;
@@ -93,7 +96,9 @@ namespace SkillSwap.Pages
             else
             {
                 return false;
-            }
+            }*/
+
+             Assert.AreEqual(sentrequestmessage, Message.Text);
 
         }
         

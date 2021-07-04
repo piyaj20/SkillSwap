@@ -23,7 +23,7 @@ namespace SkillSwap.Pages
         IWebElement Year => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[4]/div/div[2]/div/div/div[2]/div[3]/select/option[8]"));
         IWebElement Add => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[4]/div/div[2]/div/div/div[3]/div/input[1]"));
         IWebElement AddedDegree => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[4]/div/div[2]/div/table/tbody/tr/td[4]"));
-        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+        IWebElement Message => driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]"));
         IWebElement EducationTab => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[1]/a[3]"));
         IWebElement EditEducationBtn => driver.FindElement(By.XPath("//tbody/tr[1]/td[6]/span[1]/i[1]"));
         IWebElement ClearUniversityText => driver.FindElement(By.XPath("//tbody/tr[1]/td[1]/div[1]/div[1]/input[1]"));
@@ -55,16 +55,18 @@ namespace SkillSwap.Pages
             profileDescription.ValidateProfilePage();
             ClickEducationTab();
             ClickAddNew();
-            EnterCollege(university);
+            EnterCollege();
             SelectCountry();
             SelectTitle();
-            EnterDegree(degree);
+            EnterDegree();
             SelectYear();
             ClickAdd();
-            bool isMessage = ValidateEducationSavedMessage(educationmessage);
-            Assert.IsTrue(isMessage);
-            bool isEducation = ValidateAddedEducation();
-            Assert.IsTrue(isEducation);
+            //bool isMessage = ValidateEducationSavedMessage(educationmessage);
+            //Assert.IsTrue(isMessage);
+            ValidateEducationSavedMessage();
+            //bool isEducation = ValidateAddedEducation();
+            //Assert.IsTrue(isEducation);
+            ValidateAddedEducation();
             EditEducation(edituniversity);
             DeleteNewEducation();
         }
@@ -81,13 +83,13 @@ namespace SkillSwap.Pages
             AddNew.Click();
         }
 
-        public void EnterCollege(string university)
+        public void EnterCollege()
         {
             // enter College
             College.SendKeys(university);
         }
 
-        public void EnterDegree(string degree)
+        public void EnterDegree()
         {
             // enter Degree
             Degree.SendKeys(degree);
@@ -117,10 +119,10 @@ namespace SkillSwap.Pages
             Add.Click();
         }
 
-        public bool ValidateEducationSavedMessage(string educationmessage)
+        public void ValidateEducationSavedMessage()
         {
             Wait.ElementExists(driver, "XPath", "/html/body/div[1]/div", 30);
-
+            /*
             if (Message.Text == educationmessage)
             {
                 //Console.WriteLine("Success message is displayed, test passed");
@@ -130,14 +132,17 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Success message is not displayed, test failed");
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(educationmessage, Message.Text);
         }
 
-        public bool ValidateAddedEducation()
+        public void ValidateAddedEducation()
         {
             Wait.ElementExists(driver, "XPath", "//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[4]/div/div[2]/div/table/tbody/tr/td[4]", 30);
 
             //validate Education is added
+            /*
             if (AddedDegree.Text == degree)
             {
                 //Console.WriteLine("Certificate is added, test passed");
@@ -147,7 +152,9 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Certificate is not added, test failed");
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(degree, AddedDegree.Text);
         }
 
         public void EditEducation(string edituniversity)

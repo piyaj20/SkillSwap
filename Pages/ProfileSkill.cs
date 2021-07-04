@@ -21,7 +21,7 @@ namespace SkillSwap.Pages
         IWebElement SkillLevel => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/div/div[2]/select/option[2]"));
         
         IWebElement AddedSkill => driver.FindElement(By.XPath("//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody/tr/td[1]"));
-        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+        IWebElement Message => driver.FindElement(By.XPath("/html[1]/body[1]/div[1]/div[1]"));
         IWebElement EditSkillBtn => driver.FindElement(By.XPath("//tbody/tr[1]/td[3]/span[1]/i[1]"));
         IWebElement ClearSkillText => driver.FindElement(By.XPath("//tbody/tr[1]/td[1]/div[1]/div[1]/input[1]"));
         IWebElement EditSkillText => driver.FindElement(By.XPath("//tbody/tr[1]/td[1]/div[1]/div[1]/input[1]/html/body/div[1]/div"));
@@ -50,13 +50,15 @@ namespace SkillSwap.Pages
             profileDescription.ValidateProfilePage();
             ClickSkillsTab();
             ClickAddNew();
-            EnterSkill(skill);
+            EnterSkill();
             ChooseSkillLevel();
             ClickAdd();
-            bool isMessage = ValidateSkillSavedMessage(skillmessage);
-            Assert.IsTrue(isMessage);
-            bool isSkill = ValidateAddedSkill(skill);
-            Assert.IsTrue(isSkill);
+            //bool isMessage = ValidateSkillSavedMessage(skillmessage);
+            //Assert.IsTrue(isMessage);
+            ValidateSkillSavedMessage();
+            //bool isSkill = ValidateAddedSkill(skill);
+            //Assert.IsTrue(isSkill);
+            ValidateAddedSkill();
             //EditSkill(editskill);
             DeleteNewSkill();
         }
@@ -81,7 +83,7 @@ namespace SkillSwap.Pages
         }
 
 
-        public void EnterSkill(string skill)
+        public void EnterSkill()
         {
             //enter skill
             Skill.SendKeys(skill);
@@ -94,9 +96,9 @@ namespace SkillSwap.Pages
 
         }
 
-        public bool ValidateSkillSavedMessage(string skillmessage)
+        public void ValidateSkillSavedMessage()
         {
-            
+            /*
             if (Message.Text == skillmessage)
             {
                 //Console.WriteLine("Success message is displayed, test passed");
@@ -106,14 +108,17 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Success message is not displayed, test failed");
                 return false;
-            }
+            }*/
+
+            Assert.AreEqual(skillmessage, Message.Text);
         }
 
-        public bool ValidateAddedSkill(string skill)
+        public void ValidateAddedSkill()
         {
             Wait.ElementExists(driver, "XPath", "//*[@id='account-profile-section']/div/section[2]/div/div/div/div[3]/form/div[3]/div/div[2]/div/table/tbody/tr/td[1]", 30);
 
             //validate skill is added
+            /*
             if (AddedSkill.Text == skill)
             {
                 //Console.WriteLine("Skill is added, test passed");
@@ -123,7 +128,9 @@ namespace SkillSwap.Pages
             {
                 //Console.WriteLine("Skill is not added, test failed");
                 return false;
-            }
+            }*/
+
+             Assert.AreEqual(skill, AddedSkill.Text);
         }
 
 

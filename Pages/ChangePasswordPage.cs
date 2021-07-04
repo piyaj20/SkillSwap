@@ -22,13 +22,15 @@ namespace SkillSwap.Pages
         IWebElement NewPass => driver.FindElement(By.XPath("//body/div[4]/div[1]/div[2]/form[1]/div[2]/input[1]"));
         IWebElement ConfirmPass => driver.FindElement(By.XPath("//body/div[4]/div[1]/div[2]/form[1]/div[3]/input[1]"));
         IWebElement SavePassword => driver.FindElement(By.XPath("//body/div[4]/div[1]/div[2]/form[1]/div[4]/button[1]"));
-       
+        IWebElement Message => driver.FindElement(By.XPath("/html/body/div[1]/div"));
+
 
 
         //Read Data from Excel
         private string currentpassword = ExcelLib.ReadData(1, "CurrentPassword");
         private string newpassword = ExcelLib.ReadData(1, "NewPassword");
         private string confirmpassword = ExcelLib.ReadData(1, "ConfirmPassword");
+        private string message = ExcelLib.ReadData(1, "PasswordChangeMessage");
 
 
         //Create a Constructor
@@ -42,7 +44,7 @@ namespace SkillSwap.Pages
         {
             LogIn.LoginSteps();
             ClickChangePassword();
-            EnterPasswordDetails(currentpassword, newpassword, confirmpassword);
+            EnterPasswordDetails();
             ClickSavePassword();
 
         }
@@ -60,7 +62,14 @@ namespace SkillSwap.Pages
 
         }
 
-        public void EnterPasswordDetails(string currentpassword, string newpassword, string confirmpassword)
+        public bool ValidateYouAreAtChangePasswordPage()
+        {
+            return SavePassword.Displayed;
+
+        }
+
+
+        public void EnterPasswordDetails()
         {
             try
             {
@@ -82,6 +91,10 @@ namespace SkillSwap.Pages
         {
             SavePassword.Click();
         }
-        
+
+        public void ValidateSuccessMessage()
+        {
+            Assert.AreEqual(message, Message.Text);
+        }
     }
 }
