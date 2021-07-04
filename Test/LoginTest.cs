@@ -19,7 +19,7 @@ namespace SkillSwap.Test
         }
 
 
-        [Test]
+        [Test, Order(1)]
         public void SignUp()
         {
 
@@ -33,8 +33,11 @@ namespace SkillSwap.Test
                 Register registerObj = new Register(driver);
                 registerObj.RegisterUser();
 
+                //test.Log(Status.Pass, "User Registered Successfully");
+                //test.Pass("Test Passed");
+                var mediaEntity = commonMethods.CaptureScreenshotAndReturnModel(TestContext.CurrentContext.Test.Name.Trim());
                 test.Log(Status.Pass, "User Registered Successfully");
-                test.Pass("Test Passed");
+                test.Pass("Test Passed", mediaEntity);
 
             }
             catch (Exception e)
@@ -47,7 +50,7 @@ namespace SkillSwap.Test
         }
 
 
-        [Test]
+        [Test, Order(2)]
         public void Login()
         {
 
@@ -61,8 +64,11 @@ namespace SkillSwap.Test
                 LoginPage loginobj = new LoginPage(driver);
                 loginobj.LoginSteps();
 
+                //test.Log(Status.Pass, "User login successful");
+                //test.Pass("Test Passed");
+                var mediaEntity = commonMethods.CaptureScreenshotAndReturnModel(TestContext.CurrentContext.Test.Name.Trim());
                 test.Log(Status.Pass, "User login successful");
-                test.Pass("Test Passed");
+                test.Pass("Test Passed", mediaEntity);
             }
             catch (Exception e)
             {
@@ -76,7 +82,7 @@ namespace SkillSwap.Test
         }
 
 
-        [Test]
+        [Test, Order(3)]
         public void ChangePassword()
         {
 
@@ -90,8 +96,12 @@ namespace SkillSwap.Test
                 ChangePasswordPage changepasswordobj = new ChangePasswordPage(driver);
                 changepasswordobj.ChangePassword();
 
+                //test.Log(Status.Pass, "Password changed successful");
+                //test.Pass("Test Passed");
+
+                var mediaEntity = commonMethods.CaptureScreenshotAndReturnModel(TestContext.CurrentContext.Test.Name.Trim());
                 test.Log(Status.Pass, "Password changed successful");
-                test.Pass("Test Passed");
+                test.Pass("Test Passed", mediaEntity);
             }
             catch (Exception e)
             {
